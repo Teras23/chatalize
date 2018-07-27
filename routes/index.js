@@ -5,6 +5,8 @@ let router = express.Router();
 
 const messagesFolder = 'messages';
 
+let chatToFileNames = [];
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
     fs.readdir(messagesFolder, (err, fileNames) => {
@@ -13,8 +15,18 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/chat/:chatName', (req, res) => {
-    console.log(req.params);
-    res.render('chat', {test: req.params['chatName']});
+    const chatName = req.params['chatName'];
+
+    console.log(chatName);
+    console.log(chatToFileNames);
+
+    readChat(chatToFileNames[chatName], (err, fileData) => {
+        let chatJson = JSON.parse(fileData);
+        let messageCount = getMessageCount(chatJson);
+        console.log(chatToFileNames);
+        console.log(messageCount);
+        res.render('chat', {chatName: chatName, messageCount: messageCount});
+    });
 });
 
 function renderChatNamesList(res, fileNames) {
@@ -28,11 +40,11 @@ function getChatNames(fileNames, callback) {
 
     function addChatName(i) {
         if(i < fileNames.length) {
-            fs.readFile(path.join(messagesFolder, fileNames[i], 'message.json'), 'utf-8', (err, fileData) => {
+            readChat(fileNames[i], (err, fileData) => {
                 if (err === null) {
                     let chatJson = JSON.parse(fileData);
                     chatNames.push(chatJson['title']);
-                    console.log(chatJson['title'], i);
+                    chatToFileNames[chatJson['title']] = fileNames[i];
                 }
                 addChatName(i + 1);
             });
@@ -46,10 +58,14 @@ function getChatNames(fileNames, callback) {
     addChatName(0);
 }
 
-function readChat(folder) {
-    fs.readFile(path.join(messagesFolder, folder, 'message.json'), 'utf-8', (err, file) => {
-        console.log(file);
+function readChat(chatName, callback) {
+    fs.readFile(path.join(messagesFolder, chatName, 'message.json'), 'utf-8', (err, fileData) => {
+        callback(err, fileData);
     });
+}
+
+function getMessageCount(chatJson) {
+    return chatJson['messages'].length;
 }
 
 module.exports = router;
