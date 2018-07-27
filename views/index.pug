@@ -4,5 +4,6 @@ block content
   h1= title
   p Welcome to #{title}
   ul
-    each val, i in files
-      li= val
+    each val in files
+      li
+        a(href="/chat/"+val) #{val}
