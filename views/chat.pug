@@ -3,3 +3,5 @@ extends layout
 block content
     h1= chatName
     p= messageCount
+    each m in messages
+        p= m.content

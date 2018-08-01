@@ -1,12 +1,11 @@
 let express = require('express');
 let fs = require('fs');
 let path = require('path');
-let stripBom = require('strip-bom');
+const utf8 = require('utf8');
 let router = express.Router();
 
 const messagesFolder = 'messages';
 
-let chatNames = undefined;
 let chatData;
 let chatToFileNames = [];
 
@@ -14,6 +13,7 @@ let chatToFileNames = [];
 router.get('/', (req, res, next) => {
     fs.readdir(messagesFolder, (err, fileNames) => {
         updateChatData(fileNames, (chatData) => {
+
             let infoList = chatDataToList(chatData);
 
             infoList.sort((first, second) => {
@@ -22,31 +22,18 @@ router.get('/', (req, res, next) => {
 
             res.render('index', {title: "Chats", files: infoList});
         });
-
-        // renderChatNamesList(res, fileNames);
     });
 });
 
 router.get('/chat/:chatName', (req, res) => {
     const chatName = req.params['chatName'];
 
-    console.log(chatName);
-    console.log(chatToFileNames);
-
-    readChat(chatToFileNames[chatName], (err, fileData) => {
+    readChat(chatName, (err, fileData) => {
         let chatJson = JSON.parse(fileData);
         let messageCount = getMessageCount(chatJson);
-        console.log(messageCount);
-        res.setEncoding('utf16');
-        res.render('chat', {chatName: chatName, messageCount: messageCount});
+        res.render('chat', {chatName: chatName, messageCount: messageCount, messages: chatData[chatName]['messages']});
     });
 });
-
-function renderChatNamesList(res, fileNames) {
-    getChatNames(fileNames, (chatNames) => {
-        res.render('index', {title: 'Chats', files: chatNames});
-    });
-}
 
 function updateChatData(fileNames, callback) {
     chatData = [];
@@ -54,9 +41,10 @@ function updateChatData(fileNames, callback) {
     function updateData(i) {
         if (i < fileNames.length) {
             readChat(fileNames[i], (err, fileData) => {
-                if (err === null) {
-                    chatData[fileNames[i]] = JSON.parse(fileData);
+                if(err === null) {
+                    chatData[fileNames[i]] = JSON.parse(utf8.decode(JSON.stringify(JSON.parse(fileData))));
                 }
+
                 updateData(i + 1);
             });
         }
@@ -68,39 +56,11 @@ function updateChatData(fileNames, callback) {
     updateData(0);
 }
 
-function getChatNames(fileNames, callback) {
-    if (chatNames === undefined) {
-
-        chatNames = [];
-
-        function addChatName(i) {
-            if (i < fileNames.length) {
-                readChat(fileNames[i], (err, fileData) => {
-                    if (err === null) {
-                        let chatJson = JSON.parse(fileData);
-                        chatNames.push(chatJson['title']);
-                        chatToFileNames[chatJson['title']] = fileNames[i];
-                    }
-                    addChatName(i + 1);
-                });
-            }
-            else {
-                // TODO: cache chat list?
-                callback(chatNames);
-            }
-        }
-
-        addChatName(0);
-    }
-    else {
-        callback(chatNames);
-    }
-}
-
 function chatDataToList(cd) {
     let list = [];
     for (let key in cd) {
         list.push({
+            fileName: key,
             title: cd[key]['title'],
             messageCount: cd[key]['messages'].length
         });

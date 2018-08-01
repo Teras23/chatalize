@@ -3,9 +3,9 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  ul
+  ol
     each chat in files
       li
-        a(href="/chat/"+chat.title) #{chat.title}
+        a(href="/chat/"+chat.fileName) #{chat.title}
         |  #{chat.messageCount}
 
