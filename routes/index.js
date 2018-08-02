@@ -1,5 +1,5 @@
 const express = require('express');
-const fl = require('../bin/fileLoader');
+const fl = require('../bin/file_loader');
 
 let router = express.Router();
 
