@@ -3,9 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  svg(class='svg')
   ol
     each chat in files
       li
-        a(href="/chat/"+chat.fileName) #{chat.title}
+        a(href="/chat/" + chat.fileName) #{chat.title}
         |  #{chat.messageCount}
 
