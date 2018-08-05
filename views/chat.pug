@@ -6,7 +6,8 @@ block meta
 block content
   h1= chatName
   p= messageCount
-  svg(class='svg')
+  svg(id='total', class='svg')
+  svg(id='monthly', class='svg')
   // each m in messages
   //  p= m.content
   script(src='/scripts/graph.js')

@@ -21,7 +21,12 @@ router.get('/chat/:chatName', (req, res) => {
     const chatName = req.params['chatName'];
 
     let messageCount = getMessageCount(chatData[chatName]);
-    res.render('chat', {fileName: chatName, chatName: chatData[chatName]['title'], messageCount: messageCount, messages: chatData[chatName]['messages']});
+    res.render('chat', {
+        fileName: chatName,
+        chatName: chatData[chatName]['title'],
+        messageCount: messageCount,
+        messages: chatData[chatName]['messages']
+    });
 });
 
 router.get('/chat/:chatName/data', (req, res) => {
