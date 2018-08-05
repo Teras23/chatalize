@@ -7,6 +7,20 @@ function analize(chatData) {
 
     let total = chatData['messages'].length;
 
+    let currentTime = new Date();
+    let currentMonthlyDate = currentTime.toISOString().substr(0, 7);
+    let currentDailyDate = currentTime.toISOString().substr(0, 10);
+
+    if(analized.monthlyCount[currentMonthlyDate] === undefined) {
+        analized.monthlyCount[currentMonthlyDate] = 0;
+    }
+
+    if(analized.dailyCount[currentDailyDate] === undefined) {
+        analized.dailyCount[currentDailyDate] = 0;
+    }
+
+    analized.totalCount[currentDailyDate] = total;
+
     for (let i = 0; i < chatData['messages'].length; i++) {
         let time = new Date(chatData['messages'][i]['timestamp_ms']);
         let monthlyDate = time.toISOString().substr(0, 7);
@@ -32,6 +46,7 @@ function analize(chatData) {
         analized.totalCount[dailyDate] = total;
         total--;
     }
+
     return analized;
 }
 
