@@ -27,7 +27,7 @@ function analize(chatData) {
         let dailyDate = time.toISOString().substr(0, 10);
 
         const currentDailyCount = analized.dailyCount[dailyDate];
-        const currentMonthlyCount = analized.dailyCount[dailyDate];
+        const currentMonthlyCount = analized.monthlyCount[monthlyDate];
 
         if (currentDailyCount === undefined) {
             analized.dailyCount[dailyDate] = 1;
