@@ -1,7 +1,12 @@
 extends layout
 
+block meta
+  meta(property="fileName", content=fileName)
+
 block content
-    h1= chatName
-    p= messageCount
-    each m in messages
-        p= m.content
+  h1= chatName
+  p= messageCount
+  svg(class='svg')
+  // each m in messages
+  //  p= m.content
+  script(src='/scripts/graph.js')
