@@ -6,7 +6,7 @@ Currently only support Facebook chats.
 
 ### Downloading chats
 To download your Facebook chats in the right format 
-1. Got to [https://www.facebook.com/your_information/]().
+1. Got to [https://www.facebook.com/your_information/](https://www.facebook.com/your_information/).
 2. Choose _download your information_
 3. Data range: _All of my data_, Format: _JSON_, Media quility (not important): Low
 4. Select only messages.
