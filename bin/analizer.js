@@ -11,11 +11,11 @@ function analize(chatData) {
     let currentMonthlyDate = currentTime.toISOString().substr(0, 7);
     let currentDailyDate = currentTime.toISOString().substr(0, 10);
 
-    if(analized.monthlyCount[currentMonthlyDate] === undefined) {
+    if (analized.monthlyCount[currentMonthlyDate] === undefined) {
         analized.monthlyCount[currentMonthlyDate] = 0;
     }
 
-    if(analized.dailyCount[currentDailyDate] === undefined) {
+    if (analized.dailyCount[currentDailyDate] === undefined) {
         analized.dailyCount[currentDailyDate] = 0;
     }
 
@@ -81,7 +81,54 @@ function analizeList(chatData) {
     return analized;
 }
 
+function getMessageCount(chatJson) {
+    return chatJson['messages'].length;
+}
+
+function getMessageCountByPerson(chatJson) {
+    let participants = chatJson.participants;
+    console.log(participants);
+    return participants;
+}
+
+function addParticipantsObject(chatJson) {
+    for (let chat in chatJson) {
+        let participantsString = "";
+        let participants = chatJson[chat].participants;
+
+        if (participants === undefined) {
+            chatJson[chat].participantsString = "Unknown";
+            continue;
+        }
+
+        for (let i = 0; i < participants.length; i++) {
+            participantsString += participants[i];
+            if (i + 1 < participants.length) {
+                participantsString += ", "
+            }
+        }
+        chatJson[chat].participantsString = participantsString;
+    }
+}
+
+function chatDataToList(cd) {
+    let list = [];
+    for (let key in cd) {
+        list.push({
+            fileName: key,
+            title: cd[key]['title'],
+            messageCount: cd[key]['messages'].length,
+            participants: cd[key].participantsString
+        });
+    }
+    return list;
+}
+
 module.exports = {
     analize,
-    analizeList
+    analizeList,
+    getMessageCount,
+    chatDataToList,
+    getMessageCountByPerson,
+    addParticipantsObject
 };
