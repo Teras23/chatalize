@@ -2,7 +2,8 @@ function analize(chatData) {
     let analized = {
         dailyCount: {},
         monthlyCount: {},
-        totalCount: {}
+        totalCount: {},
+        totalByPerson: {}
     };
 
     let total = chatData['messages'].length;
@@ -55,7 +56,8 @@ function analizeList(chatData) {
     let analized = {
         dailyCount: [],
         monthlyCount: [],
-        totalCount: []
+        totalCount: [],
+        totalByPerson: []
     };
 
     for (const dc in map.monthlyCount) {
@@ -78,6 +80,7 @@ function analizeList(chatData) {
             total: map.totalCount[dc]
         });
     }
+
     return analized;
 }
 
@@ -124,11 +127,41 @@ function chatDataToList(cd) {
     return list;
 }
 
+function getTotalByPerson(chatData) {
+    let totalByPersonMap = {};
+    for (let i = 0; i < chatData['messages'].length; i++) {
+        let sender = chatData['messages'][i]['sender_name'];
+
+        if (totalByPersonMap[sender] === undefined) {
+            totalByPersonMap[sender] = 1;
+        }
+        else {
+            totalByPersonMap[sender]++;
+        }
+    }
+
+    let totalByPerson = [];
+
+    for (const person in totalByPersonMap) {
+        totalByPerson.push({
+            sender: person,
+            total: totalByPersonMap[person]
+        })
+    }
+
+    totalByPerson.sort((first, second) => {
+        return first.total < second.total ? 1 : first.total > second.total ? -1 : 0;
+    });
+
+    console.log(totalByPerson);
+
+    return totalByPerson;
+}
+
 module.exports = {
-    analize,
     analizeList,
     getMessageCount,
     chatDataToList,
-    getMessageCountByPerson,
-    addParticipantsObject
+    addParticipantsObject,
+    getTotalByPerson
 };

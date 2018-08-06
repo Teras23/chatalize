@@ -8,4 +8,8 @@ block content
   p= messageCount
   svg(id='total', class='svg')
   svg(id='monthly', class='svg')
+  ol
+    each t in totalByPerson
+      li
+        | #{t.sender} - #{t.total}
   script(src='/scripts/graph.js')
