@@ -3,7 +3,8 @@ function analize(chatData) {
         dailyCount: {},
         monthlyCount: {},
         totalCount: {},
-        totalByPerson: {}
+        totalByPerson: {},
+        timeBetweenMessages: {}
     };
 
     let total = chatData['messages'].length;
@@ -22,30 +23,30 @@ function analize(chatData) {
 
     analized.totalCount[currentDailyDate] = total;
 
+    let lastTime = undefined;
+
     for (let i = 0; i < chatData['messages'].length; i++) {
         let time = new Date(chatData['messages'][i]['timestamp_ms']);
         let monthlyDate = time.toISOString().substr(0, 7);
         let dailyDate = time.toISOString().substr(0, 10);
 
-        const currentDailyCount = analized.dailyCount[dailyDate];
-        const currentMonthlyCount = analized.monthlyCount[monthlyDate];
+        analized.dailyCount[dailyDate] =
+            analized.dailyCount[dailyDate] ? analized.dailyCount[dailyDate] + 1 : 1;
 
-        if (currentDailyCount === undefined) {
-            analized.dailyCount[dailyDate] = 1;
-        }
-        else {
-            analized.dailyCount[dailyDate]++;
-        }
+        analized.monthlyCount[monthlyDate] =
+            analized.monthlyCount[monthlyDate] ? analized.monthlyCount[monthlyDate] + 1 : 1;
 
-        if (currentMonthlyCount === undefined) {
-            analized.monthlyCount[monthlyDate] = 1;
-        }
-        else {
-            analized.monthlyCount[monthlyDate]++;
+        if (lastTime !== undefined) {
+            let timeBetween = Math.round(Math.log10(Math.ceil(Math.abs(lastTime - time) / 1000)));
+            if(timeBetween >= 0) {
+                analized.timeBetweenMessages[timeBetween] =
+                    analized.timeBetweenMessages[timeBetween] ? analized.timeBetweenMessages[timeBetween] + 1 : 1;
+            }
         }
 
         analized.totalCount[dailyDate] = total;
         total--;
+        lastTime = time;
     }
 
     return analized;
@@ -57,7 +58,8 @@ function analizeList(chatData) {
         dailyCount: [],
         monthlyCount: [],
         totalCount: [],
-        totalByPerson: []
+        totalByPerson: [],
+        timeBetween: []
     };
 
     for (const dc in map.monthlyCount) {
@@ -81,17 +83,18 @@ function analizeList(chatData) {
         });
     }
 
+    for (const dc in map.timeBetweenMessages) {
+        analized.timeBetween.push({
+            time: dc,
+            count: map.timeBetweenMessages[dc]
+        });
+    }
+
     return analized;
 }
 
 function getMessageCount(chatJson) {
     return chatJson['messages'].length;
-}
-
-function getMessageCountByPerson(chatJson) {
-    let participants = chatJson.participants;
-    console.log(participants);
-    return participants;
 }
 
 function addParticipantsObject(chatJson) {
@@ -152,8 +155,6 @@ function getTotalByPerson(chatData) {
     totalByPerson.sort((first, second) => {
         return first.total < second.total ? 1 : first.total > second.total ? -1 : 0;
     });
-
-    console.log(totalByPerson);
 
     return totalByPerson;
 }
