@@ -219,6 +219,36 @@ function longestTimeBetweenConversations (chatData) {
     return longestTime;
 }
 
+function averageMessageLength (chatData) {
+    let messageLengthMap = {};
+    let messageCountMap = {};
+    for (let i = 0; i < chatData['messages'].length; i++) {
+        let sender = chatData['messages'][i]['sender_name'];
+        if (chatData['messages'][i]['content']!==undefined) {
+            let words = chatData['messages'][i]['content'].split(" ");
+            messageLengthMap[sender] =
+                messageLengthMap[sender] ? messageLengthMap[sender] + words.length : words.length;
+            messageCountMap[sender] =
+                messageCountMap[sender] ? messageCountMap[sender] + 1 : 1;
+        }
+    }
+
+    let messageLengths = [];
+
+    for (const person in messageLengthMap) {
+        messageLengths.push({
+            sender: person,
+            count: Math.round(messageLengthMap[person]/messageCountMap[person]*100) / 100
+        })
+    }
+
+    messageLengths.sort((first, second) => {
+        return first.count < second.count ? 1 : first.count > second.count ? -1 : 0;
+    });
+
+    return messageLengths;
+}
+
 module.exports = {
     analizeList,
     getMessageCount,
@@ -226,5 +256,6 @@ module.exports = {
     addParticipantsObject,
     getTotalByPerson,
     getConversationStarters,
-    longestTimeBetweenConversations
+    longestTimeBetweenConversations,
+    averageMessageLength
 };

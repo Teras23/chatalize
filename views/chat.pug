@@ -20,5 +20,10 @@ block content
       li
         | #{t.sender} - #{t.count}
   p= 'Longest time between two messages:'+ longestTime + ' days'
+  p #[strong Average number of words in a message]
+  ul
+    each  t in averageWords
+      li
+        | #{t.sender} - #{t.count}
 
   script(src='/scripts/graph.js')

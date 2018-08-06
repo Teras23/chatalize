@@ -26,6 +26,7 @@ router.get('/chat/:chatName', (req, res) => {
     let totalByPerson = an.getTotalByPerson(chatData[chatName]);
     let conversationStarters = an.getConversationStarters(chatData[chatName]);
     let longestTime = an.longestTimeBetweenConversations(chatData[chatName]);
+    let averageWords = an.averageMessageLength(chatData[chatName]);
 
     res.render('chat', {
         fileName: chatName,
@@ -34,7 +35,8 @@ router.get('/chat/:chatName', (req, res) => {
         messages: chatData[chatName]['messages'],
         totalByPerson: totalByPerson,
         conversationStarters: conversationStarters,
-        longestTime: longestTime
+        longestTime: longestTime,
+        averageWords: averageWords
     });
 });
 
