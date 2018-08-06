@@ -13,4 +13,9 @@ block content
     each t in totalByPerson
       li
         | #{t.sender} - #{t.total}
+  ol
+    each t in conversationStarters
+      li
+        | #{t.sender} - #{t.count}
+
   script(src='/scripts/graph.js')

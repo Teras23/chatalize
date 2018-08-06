@@ -23,12 +23,15 @@ router.get('/chat/:chatName', (req, res) => {
 
     let messageCount = an.getMessageCount(chatData[chatName]);
     let totalByPerson = an.getTotalByPerson(chatData[chatName]);
+    let conversationStarters = an.getConversationStarters(chatData[chatName]);
+
     res.render('chat', {
         fileName: chatName,
         chatName: chatData[chatName]['title'],
         messageCount: messageCount,
         messages: chatData[chatName]['messages'],
-        totalByPerson: totalByPerson
+        totalByPerson: totalByPerson,
+        conversationStarters: conversationStarters
     });
 });
 

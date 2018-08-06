@@ -37,10 +37,12 @@ function analize(chatData) {
             analized.monthlyCount[monthlyDate] ? analized.monthlyCount[monthlyDate] + 1 : 1;
 
         if (lastTime !== undefined) {
-            let timeBetween = Math.round(Math.log10(Math.ceil(Math.abs(lastTime - time) / 1000)));
-            if(timeBetween >= 0) {
-                analized.timeBetweenMessages[timeBetween] =
-                    analized.timeBetweenMessages[timeBetween] ? analized.timeBetweenMessages[timeBetween] + 1 : 1;
+            let timeBetween = Math.ceil(Math.abs(lastTime - time) / 1000); // Seconds
+            let timeBetweenLog = Math.round(Math.log10(timeBetween));
+
+            if (timeBetweenLog >= 0) {
+                analized.timeBetweenMessages[timeBetweenLog] =
+                    analized.timeBetweenMessages[timeBetweenLog] ? analized.timeBetweenMessages[timeBetweenLog] + 1 : 1;
             }
         }
 
@@ -159,10 +161,47 @@ function getTotalByPerson(chatData) {
     return totalByPerson;
 }
 
+function getConversationStarters(chatData) {
+    let conversationStartersMap = {};
+
+    let lastTime = undefined;
+
+    for (let i = 0; i < chatData['messages'].length; i++) {
+        let sender = chatData['messages'][i]['sender_name'];
+        let time = new Date(chatData['messages'][i]['timestamp_ms']);
+
+        if (lastTime !== undefined) {
+            let timeBetween = Math.ceil(Math.abs(lastTime - time) / 1000); // Seconds
+            if (timeBetween > 60 * 60) { // One hour
+                conversationStartersMap[sender] =
+                    conversationStartersMap[sender] ? conversationStartersMap[sender] + 1 : 1;
+            }
+        }
+
+        lastTime = time;
+    }
+
+    let conversationStarters = [];
+
+    for (const person in conversationStartersMap) {
+        conversationStarters.push({
+            sender: person,
+            count: conversationStartersMap[person]
+        })
+    }
+
+    conversationStarters.sort((first, second) => {
+        return first.count < second.count ? 1 : first.count > second.count ? -1 : 0;
+    });
+
+    return conversationStarters;
+}
+
 module.exports = {
     analizeList,
     getMessageCount,
     chatDataToList,
     addParticipantsObject,
-    getTotalByPerson
+    getTotalByPerson,
+    getConversationStarters
 };
