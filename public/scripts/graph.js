@@ -17,7 +17,7 @@ xhr.send();
 function drawTotalGraph(obj) {
     console.log("drawing graph");
     var svg = d3.select(".svg");
-    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var margin = {top: 40, right: 20, bottom: 50, left: 50};
     var width = 200 + margin.left - margin.right;
     var height = 150 + margin.top - margin.bottom;
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -64,12 +64,20 @@ function drawTotalGraph(obj) {
         .data([data])
         .attr('class', 'line')
         .attr('d', line);
+
+    g.append('text')
+        .attr('x', width / 2)
+        .attr('y', 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("Total messages over time");
 }
 
 function drawMonthlyGraph(obj) {
     console.log("drawing graph");
     var svg = d3.select("#monthly");
-    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var margin = {top: 40, right: 20, bottom: 50, left: 50};
     var width = 200 + margin.left - margin.right;
     var height = 150 + margin.top - margin.bottom;
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -116,12 +124,20 @@ function drawMonthlyGraph(obj) {
         .data([data])
         .attr('class', 'line')
         .attr('d', line);
+
+    g.append('text')
+        .attr('x', width / 2)
+        .attr('y', 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("Frequency of messages by month");
 }
 
 function drawTimeBetween(obj) {
     console.log("drawing graph");
     var svg = d3.select("#timeBetween");
-    var margin = {top: 20, right: 20, bottom: 30, left: 50};
+    var margin = {top: 40, right: 20, bottom: 50, left: 50};
     var width = 200 + margin.left - margin.right;
     var height = 150 + margin.top - margin.bottom;
     var g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -168,4 +184,12 @@ function drawTimeBetween(obj) {
         .data([data])
         .attr('class', 'line')
         .attr('d', line);
+
+    g.append('text')
+        .attr('x', width / 2)
+        .attr('y', 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("text-decoration", "underline")
+        .text("Time between messages log seconds");
 }

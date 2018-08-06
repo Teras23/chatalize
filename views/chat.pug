@@ -9,10 +9,12 @@ block content
   svg(id='total', class='svg')
   svg(id='monthly', class='svg')
   svg(id='timeBetween', class='svg')
+  p #[strong Total messages by person]
   ol
     each t in totalByPerson
       li
         | #{t.sender} - #{t.total}
+  p #[strong Chats started by person]
   ol
     each t in conversationStarters
       li
