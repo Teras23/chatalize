@@ -18,12 +18,14 @@ router.get('/', (req, res, next) => {
     res.render('index', {title: "Chats", files: infoList});
 });
 
+
 router.get('/chat/:chatName', (req, res) => {
     const chatName = req.params['chatName'];
 
     let messageCount = an.getMessageCount(chatData[chatName]);
     let totalByPerson = an.getTotalByPerson(chatData[chatName]);
     let conversationStarters = an.getConversationStarters(chatData[chatName]);
+    let longestTime = an.longestTimeBetweenConversations(chatData[chatName]);
 
     res.render('chat', {
         fileName: chatName,
@@ -31,7 +33,8 @@ router.get('/chat/:chatName', (req, res) => {
         messageCount: messageCount,
         messages: chatData[chatName]['messages'],
         totalByPerson: totalByPerson,
-        conversationStarters: conversationStarters
+        conversationStarters: conversationStarters,
+        longestTime: longestTime
     });
 });
 

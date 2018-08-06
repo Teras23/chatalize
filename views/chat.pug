@@ -19,5 +19,6 @@ block content
     each t in conversationStarters
       li
         | #{t.sender} - #{t.count}
+  p= 'Longest time between two messages:'+ longestTime + ' days'
 
   script(src='/scripts/graph.js')

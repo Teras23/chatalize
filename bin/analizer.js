@@ -197,11 +197,34 @@ function getConversationStarters(chatData) {
     return conversationStarters;
 }
 
+function longestTimeBetweenConversations (chatData) {
+    let longestTime = 0;
+
+    let lastTime = undefined;
+
+    for (let i = chatData['messages'].length-1; i > -1; i--) {
+        let time = new Date(chatData['messages'][i]['timestamp_ms']);
+        if (lastTime !== undefined) {
+            let timeBetween = Math.ceil(Math.abs(lastTime - time) / 1000); // Seconds
+            if (timeBetween > longestTime) {
+                longestTime = timeBetween;
+            }
+        }
+        lastTime = time;
+    }
+
+    longestTime/=3600; // Hours
+    longestTime = Math.floor(longestTime/24); // Days
+
+    return longestTime;
+}
+
 module.exports = {
     analizeList,
     getMessageCount,
     chatDataToList,
     addParticipantsObject,
     getTotalByPerson,
-    getConversationStarters
+    getConversationStarters,
+    longestTimeBetweenConversations
 };
