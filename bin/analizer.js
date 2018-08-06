@@ -162,6 +162,7 @@ function getTotalByPerson(chatData) {
 }
 
 function getConversationStarters(chatData) {
+    let conversationStartersMap = {};
 
     let lastTime = undefined;
 
