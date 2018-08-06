@@ -163,18 +163,21 @@ function getTotalByPerson(chatData) {
 
 function getConversationStarters(chatData) {
     let conversationStartersMap = {};
+    let messages = [];
 
     let lastTime = undefined;
 
-    for (let i = 0; i < chatData['messages'].length; i++) {
+    for (let i = chatData['messages'].length-1; i > -1; i--) {
         let sender = chatData['messages'][i]['sender_name'];
         let time = new Date(chatData['messages'][i]['timestamp_ms']);
+        let message = chatData['messages'][i]['content'];
 
         if (lastTime !== undefined) {
             let timeBetween = Math.ceil(Math.abs(lastTime - time) / 1000); // Seconds
             if (timeBetween > 60 * 60) { // One hour
                 conversationStartersMap[sender] =
                     conversationStartersMap[sender] ? conversationStartersMap[sender] + 1 : 1;
+                messages.push(message);
             }
         }
 
@@ -193,6 +196,8 @@ function getConversationStarters(chatData) {
     conversationStarters.sort((first, second) => {
         return first.count < second.count ? 1 : first.count > second.count ? -1 : 0;
     });
+
+    console.log(messages);
 
     return conversationStarters;
 }
