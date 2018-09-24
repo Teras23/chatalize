@@ -110,12 +110,18 @@ function addParticipantsObject(chatJson) {
         }
 
         for (let i = 0; i < participants.length; i++) {
-            participantsString += participants[i];
+            participantsString += participants[i]["name"];
             if (i + 1 < participants.length) {
                 participantsString += ", "
             }
         }
-        chatJson[chat].participantsString = participantsString;
+
+        if (participants.length <= 2) {
+            chatJson[chat].participantsString = null;
+        }
+        else {
+            chatJson[chat].participantsString = participantsString;
+        }
     }
 }
 
