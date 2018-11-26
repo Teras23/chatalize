@@ -22,5 +22,6 @@ Make sure you have [node.js](https://nodejs.org/en/download/) and npm (should co
 4. Move all the messages into `chatalize/messages` folder
 
 ### Running
-1. `npm start`
-2. Go to `localhost:3000`
+1. `npm start`  
+2. Might take a minute or two for the files to be converted
+3. Go to `localhost:3000`
