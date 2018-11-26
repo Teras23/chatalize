@@ -27,7 +27,9 @@ const server = http.createServer(app);
  */
 
 async function startServer() {
+    console.log("Started file conversion")
     await fl.convertFiles();
+    console.log("Files converted")
 
     server.listen(port);
     server.on('error', onError);
