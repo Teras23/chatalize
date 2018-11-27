@@ -19,7 +19,8 @@ Make sure you have [node.js](https://nodejs.org/en/download/) and npm (should co
 1. `git clone https://github.com/Teras23/chatalize.git`
 2. `cd chatalize`
 3. `npm install`
-4. Move all the messages into `chatalize/messages` folder
+4. Move all the conversation forlders into `chatalize/messages` folder (from `messages/inbox` and `messages/archived_threads`)
+5. The `messages` forlder should have folders in it that contains your friend's names
 
 ### Running
 1. `npm start`  
