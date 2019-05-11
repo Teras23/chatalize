@@ -3,11 +3,14 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  ol
-    each chat in files
-      li
-        a(href="/chat/" + chat.fileName) #{chat.title}
-        |  #{chat.messageCount}
-        if chat.title !== chat.participants
-          | - #{chat.participants}
+  div(class="row")
+    div(class="col")
+      ul(class="list-group")
+        each chat in files
+          a(href="/chat/" + chat.fileName)
+            li(class="list-group-item list-group-item-action")
+              span(class="badge badge-primary badge-pill mr-4") #{chat.messageCount}
+              span #{chat.title}
+              if chat.participants !== null
+                | - #{chat.participants}
 
