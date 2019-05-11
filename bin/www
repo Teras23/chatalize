@@ -38,7 +38,9 @@ async function startServer() {
 
 startServer();
 
-open("http://localhost:3000");
+if (process.env.NODEMON !== "TRUE") {
+    open("http://localhost:3000");
+}
 
 /**
  * Normalize a port into a number, string, or false.

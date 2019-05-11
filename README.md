@@ -25,4 +25,7 @@ Make sure you have [node.js](https://nodejs.org/en/download/) and npm (should co
 ### Running
 1. `npm start`  
 2. Might take a minute or two for the files to be converted
-3. Go to `localhost:3000`
+3. A browser window with `localhost:3000` should open up automatically after converting, otherwise go to `localhost:3000`
+
+### Development
+To run the program in development mode type `npm run dev`. This reloads the server upon file changes but does not open up the browser automatically.
