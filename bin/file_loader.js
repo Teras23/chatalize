@@ -11,7 +11,7 @@ async function convertFiles() {
     folderNames = fs.readdirSync(messagesFolder);
 
     for (let i = 0; i < folderNames.length; i++) {
-        let filePath = path.join(messagesFolder, folderNames[i], 'message.json');
+        let filePath = path.join(messagesFolder, folderNames[i], 'message_1.json');
         let convertedFilePath = path.join(messagesFolder, folderNames[i], 'message_converted.json');
         if (fs.existsSync(filePath)) {
             let convertedData;
