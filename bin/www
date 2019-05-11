@@ -8,7 +8,7 @@ const app = require('../app');
 const debug = require('debug')('chatalize:server');
 const http = require('http');
 const fl = require('./file_loader');
-
+const open = require('open');
 /**
  * Get port from environment and store in Express.
  */
@@ -27,9 +27,9 @@ const server = http.createServer(app);
  */
 
 async function startServer() {
-    console.log("Started file conversion")
+    console.log("Started file conversion");
     await fl.convertFiles();
-    console.log("Files converted")
+    console.log("Files converted");
 
     server.listen(port);
     server.on('error', onError);
@@ -37,6 +37,8 @@ async function startServer() {
 }
 
 startServer();
+
+open("http://localhost:3000");
 
 /**
  * Normalize a port into a number, string, or false.
