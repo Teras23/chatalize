@@ -1,29 +1,38 @@
-extends layout
+extends widelayout
 
 block meta
   meta(property="fileName", content=fileName)
 
 block content
-  h1= chatName
-  p= messageCount
-  svg(id='total', class='svg')
-  svg(id='monthly', class='svg')
-  svg(id='timeBetween', class='svg')
-  p #[strong Total messages by person]
-  ol
-    each t in totalByPerson
-      li
-        | #{t.sender} - #{t.total}
-  p #[strong Chats started by person]
-  ol
-    each t in conversationStarters
-      li
-        | #{t.sender} - #{t.count}
-  p= 'Longest time between two messages:'+ longestTime + ' days'
-  p #[strong Average number of words in a message]
-  ul
-    each  t in averageWords
-      li
-        | #{t.sender} - #{t.count}
+  div(class='row infobar py-2 border-bottom')
+    div(class='col d-flex align-items-center')
+      a(href="/")
+        button(class="btn btn-outline-secondary") Back
+    div(class='col text-center')
+      h1= chatName
+    div(class='col text-right')
+  div(class='row')
+    div(class='col-8 border-right')
+    div(class='col-4 py-4')
+      p #[strong Total messages:] #{messageCount}
+      svg(id='total', class='svg')
+      svg(id='monthly', class='svg')
+      svg(id='timeBetween', class='svg')
+      p #[strong Total messages by person]
+      ol
+        each t in totalByPerson
+          li
+            | #{t.sender} - #{t.total}
+      p #[strong Chats started by person]
+      ol
+        each t in conversationStarters
+          li
+            | #{t.sender} - #{t.count}
+      p= 'Longest time between two messages:'+ longestTime + ' days'
+      p #[strong Average number of words in a message]
+      ul
+        each  t in averageWords
+          li
+            | #{t.sender} - #{t.count}
 
   script(src='/scripts/graph.js')
