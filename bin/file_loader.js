@@ -4,7 +4,11 @@ const utf8 = require('utf8');
 
 const messagesFolder = 'messages';
 
-let chatData = [];
+let chatData = {
+    messages: {},
+    ownerName: null,
+    participants: {}
+};
 
 async function convertFiles() {
     let folderNames;
@@ -26,9 +30,19 @@ async function convertFiles() {
                 convertedData = fs.readFileSync(convertedFilePath);
             }
 
-            chatData[folderNames[i]] = JSON.parse(convertedData);
+            chatData.messages[folderNames[i]] = JSON.parse(convertedData);
+            for (let participant of chatData.messages[folderNames[i]].participants) {
+                if (chatData.participants[participant.name] !== undefined) {
+                    chatData.participants[participant.name] += 1
+                }
+                else {
+                    chatData.participants[participant.name] = 1
+                }
+            }
         }
     }
+    chatData.ownerName = Object.keys(chatData.participants).reduce(
+        (a, b) => chatData.participants[a] > chatData.participants[b] ? a : b);
 }
 
 module.exports = {

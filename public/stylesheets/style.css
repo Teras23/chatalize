@@ -5,3 +5,31 @@ body {
 a {
   color: #00B7FF;
 }
+
+.container-chat {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+}
+
+.container-content {
+  flex-grow:1;
+}
+
+.message-left, .message-right {
+  display: inline-block;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 2em;
+  color: white;
+}
+
+.message-left {
+  background-color: #6c757d;
+}
+
+.message-right {
+  background-color: #00B7FF;
+  float:right
+}

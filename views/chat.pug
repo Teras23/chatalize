@@ -11,8 +11,19 @@ block content
     div(class='col text-center')
       h1= chatName
     div(class='col text-right')
-  div(class='row')
+  div(class='row container-content')
     div(class='col-8 border-right')
+      div(class='container-chat flex-grow-1' id="chatContainer")
+        each message in messagesSnippet
+          if message.content !== undefined
+            div(class='row')
+              div(class='col')
+                if message.sender_name === ownerName
+                  span(class='message-right')
+                    span=message.content
+                else
+                  span(class='message-left')
+                    span=message.content
     div(class='col-4 py-4')
       p #[strong Total messages:] #{messageCount}
       svg(id='total', class='svg')

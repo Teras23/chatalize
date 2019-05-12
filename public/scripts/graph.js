@@ -14,6 +14,9 @@ xhr.onreadystatechange = () => {
 };
 xhr.send();
 
+var chat = document.getElementById("chatContainer");
+chat.scrollTop = chat.scrollHeight;
+
 function drawTotalGraph(obj) {
     console.log("drawing graph");
     var svg = d3.select(".svg");
