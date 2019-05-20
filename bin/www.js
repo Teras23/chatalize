@@ -34,13 +34,14 @@ async function startServer() {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
+
+    if (process.env.NODEMON !== "TRUE") {
+        open("http://localhost:3000");
+    }
+
 }
 
 startServer();
-
-if (process.env.NODEMON !== "TRUE") {
-    open("http://localhost:3000");
-}
 
 /**
  * Normalize a port into a number, string, or false.
