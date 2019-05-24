@@ -33,3 +33,13 @@ a {
   background-color: #00B7FF;
   float:right
 }
+#more {display: none;}
+
+.showParticipantsOnHover { 
+  display: none;
+}
+
+a:hover .showParticipantsOnHover {
+  display: block;
+  text-decoration: none;
+}
