@@ -42,6 +42,43 @@ router.get('/chat/:chatName', (req, res) => {
     });
 });
 
+router.get('/chat/:chatName/messages', (req, res) => {
+    let startTime = parseInt(req.query.start);
+    let endTime = parseInt(req.query.end);
+    let message = req.query.msg;
+    const chatName = req.params['chatName'];
+
+    let messages = chatData.messages[chatName]['messages'];
+
+    startTime = isNaN(startTime) ? undefined : startTime;
+    endTime = isNaN(endTime) ? undefined : endTime;
+    console.log(startTime, endTime, message);
+
+    messages = messages.filter(msg => {
+        return msg["content"] !== undefined
+    });
+
+    if (startTime !== undefined) {
+        messages = messages.filter(msg => {
+            return msg["timestamp_ms"] >= startTime
+        });
+    }
+
+    if (endTime !== undefined) {
+        messages = messages.filter(msg => {
+            return msg["timestamp_ms"] <= endTime
+        });
+    }
+
+    if (message !== undefined) {
+        messages = messages.filter(msg => {
+            return msg["content"].search(new RegExp(message, "i")) !== -1
+        });
+    }
+
+    res.send(messages);
+});
+
 router.get('/chat/:chatName/data', (req, res) => {
     const chatName = req.params['chatName'];
     res.send(an.analizeList(chatData.messages[chatName]));
