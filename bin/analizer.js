@@ -1,3 +1,62 @@
+function anayizeAll(data) {
+    let timelineAll = {};
+
+    let total = 0;
+
+    for (const name in data) {
+        total += data[name]['messages'].length;
+    }
+
+    let currentTime = new Date();
+    let currentDailyDate = currentTime.toISOString().substr(0, 10);
+
+
+    let timelineDateMap = {};
+
+    for (const name in data) {
+        let chatData = data[name]['messages'];
+        for (let i = 0; i < chatData.length; i++) {
+            let time = new Date(chatData[i]['timestamp_ms']);
+            let dailyDate = time.toISOString().substr(0, 10);
+
+            if (timelineDateMap[dailyDate] === undefined) {
+                timelineDateMap[dailyDate] = 1;
+            }
+            else {
+                timelineDateMap[dailyDate]++;
+            }
+        }
+    }
+
+    timelineAll[currentDailyDate] = total;
+
+    let timelineDateList = [];
+
+    for (const date in timelineDateMap) {
+        timelineDateList.push({
+            date: date,
+            count: timelineDateMap[date]
+        })
+    }
+
+    timelineDateList.sort((a, b) => {
+        return b.date.localeCompare(a.date);
+    });
+
+
+    let timelineAllList = [];
+
+    for (const dc of timelineDateList) {
+        timelineAllList.push({
+            date: dc.date,
+            count: total
+        });
+        total -= dc.count;
+    }
+
+    return timelineAllList;
+}
+
 function analize(chatData) {
     let analized = {
         dailyCount: {},
@@ -61,7 +120,8 @@ function analizeList(chatData) {
         monthlyCount: [],
         totalCount: [],
         totalByPerson: [],
-        timeBetween: []
+        timeBetween: [],
+        timelineAll: []
     };
 
     for (const dc in map.monthlyCount) {
@@ -91,7 +151,6 @@ function analizeList(chatData) {
             count: map.timeBetweenMessages[dc]
         });
     }
-
     return analized;
 }
 
@@ -263,5 +322,6 @@ module.exports = {
     getTotalByPerson,
     getConversationStarters,
     longestTimeBetweenConversations,
-    averageMessageLength
+    averageMessageLength,
+    anayizeAll
 };

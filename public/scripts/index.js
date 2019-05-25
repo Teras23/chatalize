@@ -1,38 +1,20 @@
 var xhr = new XMLHttpRequest();
-var fileName = document.head.querySelector("[property=fileName]").content;
-xhr.open('GET', '/chat/' + fileName + '/data');
+xhr.open('GET', '/data');
 xhr.onreadystatechange = () => {
     var DONE = 4;
     var OK = 200;
     if (xhr.readyState === DONE && xhr.status === OK) {
         let data = JSON.parse(xhr.responseText);
         console.log(data);
-        drawTimeBetween(data);
+        drawChart(data);
     }
 };
 xhr.send();
 
-var chat = document.getElementById("chatContainer");
-chat.scrollTop = chat.scrollHeight;
-
-function drawTimeBetween(rawData) {
+function drawChart(rawData) {
     var ctx = document.getElementById("canvas");
 
-    var data = rawData.totalCount.map(d => {
-            return {
-                t: new Date(d.date),
-                y: d.total
-            };
-        }
-    );
-
-    data.reverse();
-
-    var labels = rawData.totalCount.map(d => new Date(d.date));
-
-    labels.reverse();
-
-    var data2 = rawData.monthlyCount.map(d => {
+    var data = rawData.map(d => {
             return {
                 t: new Date(d.date),
                 y: d.count
@@ -40,18 +22,17 @@ function drawTimeBetween(rawData) {
         }
     );
 
+    data.reverse();
+
+    var labels = rawData.map(d => new Date(d.date));
+
+    labels.reverse();
 
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [
-                {
-                    label: 'Frequency of messages by month',
-                    data: data2,
-                    borderColor: "#c45850",
-                    fill: false
-                },
                 {
                     label: 'Total messages over time',
                     data: data,

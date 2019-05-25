@@ -3,6 +3,7 @@ block content
   div(class="container")
     h1= title
     p Welcome to #{title}
+    canvas(id='canvas')
     div(class="row")
       div(class="col")
         ul(class="list-group")
@@ -17,3 +18,4 @@ block content
                   span(class="badge badge-pill badge-light mr-4") #{chat.messageCount}
                   span #{chat.title}
                   span(class="showParticipantsOnHover") #{chat.participants}
+    script(src="/scripts/index.js")

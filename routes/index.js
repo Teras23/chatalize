@@ -18,6 +18,9 @@ router.get('/', (req, res, next) => {
     res.render('index', {title: "Chats", files: infoList});
 });
 
+router.get('/data', (req, res) => {
+    res.send(an.anayizeAll(chatData.messages));
+});
 
 router.get('/chat/:chatName', (req, res) => {
     const chatName = req.params['chatName'];
