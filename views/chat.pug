@@ -1,49 +1,48 @@
-extends widelayout
+extends layout
 
 block meta
   meta(property="fileName", content=fileName)
 
 block content
-  div(class='row infobar py-2 border-bottom')
-    div(class='col d-flex align-items-center')
-      a(href="/")
-        button(class="btn btn-outline-secondary") Back
-    div(class='col text-center')
-      h1= chatName
-    div(class='col text-right')
-  div(class='row container-content')
-    div(class='col-8 border-right')
-      div(class='container-chat flex-grow-1' id="chatContainer")
-        each message in messagesSnippet
-          if message.content !== undefined
-            div(class='row')
-              div(class='col')
-                if message.sender_name === ownerName
-                  span(class='message-right')
-                    span=message.content
-                else
-                  span(class='message-left')
-                    span=message.content
-    div(class='col-4 py-4')
-      p #[strong Total messages:] #{messageCount}
-      svg(id='total', class='svg')
-      svg(id='monthly', class='svg')
-      svg(id='timeBetween', class='svg')
-      p #[strong Total messages by person]
-      ol
-        each t in totalByPerson
-          li
-            | #{t.sender} - #{t.total}
-      p #[strong Chats started by person]
-      ol
-        each t in conversationStarters
-          li
-            | #{t.sender} - #{t.count}
-      p= 'Longest time between two messages:'+ longestTime + ' days'
-      p #[strong Average number of words in a message]
-      ul
-        each  t in averageWords
-          li
-            | #{t.sender} - #{t.count}
+  div(class="container-fluid d-flex h-100 flex-column")
+    div(class='row infobar py-2 border-bottom')
+      div(class='col d-flex align-items-center')
+        a(href="/")
+          button(class="btn btn-outline-secondary") Back
+      div(class='col text-center')
+        h1= chatName
+      div(class='col text-right')
+    div(class='row container-content')
+      div(class='col-8 border-right')
+        div(class='container-chat flex-grow-1' id="chatContainer")
+          each message in messagesSnippet
+            if message.content !== undefined
+              div(class='row')
+                div(class='col')
+                  if message.sender_name === ownerName
+                    span(class='message-right')
+                      span=message.content
+                  else
+                    span(class='message-left')
+                      span=message.content
+      div(class='col-4 py-4')
+        p #[strong Total messages:] #{messageCount}
+        canvas(id='totalcan')
+        p #[strong Total messages by person]
+        ol
+          each t in totalByPerson
+            li
+              | #{t.sender} - #{t.total}
+        p #[strong Chats started by person]
+        ol
+          each t in conversationStarters
+            li
+              | #{t.sender} - #{t.count}
+        p= 'Longest time between two messages:'+ longestTime + ' days'
+        p #[strong Average number of words in a message]
+        ul
+          each  t in averageWords
+            li
+              | #{t.sender} - #{t.count}
 
   script(src='/scripts/graph.js')

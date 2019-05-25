@@ -1,33 +1,19 @@
 extends layout
 block content
-  //-
-    script.
-      var showParticipants = function() {
-        var participants = document.getElementById("showParticipants");
-        var btnText = document.getElementById("myBtn");
-
-        if (participants.style.display === "inline") {
-          btnText.innerHTML = "Show participants";
-          participants.style.display = "none";
-        } else {
-          btnText.innerHTML = "Hide participants";
-          participants.style.display = "inline";
-        }
-      }
-  h1= title
-  p Welcome to #{title}
-  div(class="row")
-    div(class="col")
-      ul(class="list-group")
-        each chat in files
-          a(href="/chat/" + chat.fileName)
-            if chat.participants === null
-              li(class="list-group-item list-group-item-action list-group-item-light")
-                span(class="badge badge-primary badge-pill mr-4") #{chat.messageCount}
-                span #{chat.title}
-            else
-              li(class="list-group-item list-group-item-action list-group-item-info")
-                span(class="badge badge-pill badge-light mr-4") #{chat.messageCount}
-                span #{chat.title}
-                span(class="showParticipantsOnHover") #{chat.participants}
-                //span(class="btn btn-default btn-lg" onclick='showParticipants()' id="participants") Show participants
+  div(class="container")
+    h1= title
+    p Welcome to #{title}
+    div(class="row")
+      div(class="col")
+        ul(class="list-group")
+          each chat in files
+            a(href="/chat/" + chat.fileName)
+              if chat.participants === null
+                li(class="list-group-item list-group-item-action list-group-item-light")
+                  span(class="badge badge-primary badge-pill mr-4") #{chat.messageCount}
+                  span #{chat.title}
+              else
+                li(class="list-group-item list-group-item-action list-group-item-info")
+                  span(class="badge badge-pill badge-light mr-4") #{chat.messageCount}
+                  span #{chat.title}
+                  span(class="showParticipantsOnHover") #{chat.participants}
