@@ -1,20 +1,128 @@
 extends layout
 block content
+  script.
+    function showDirects() {
+      var checkBox = document.getElementById("DirectMessages");
+      var text = document.getElementsByClassName("directs");
+      if (checkBox.checked == true){
+      	for (i = 0; i < text.length; i++) { 
+          text[i].style.display = "block";
+        }
+      } else {
+         for (i = 0; i < text.length; i++) { 
+          text[i].style.display = "none";
+        }
+      }
+    }
+    function showGroups() {
+      var checkBox = document.getElementById("GroupMessages");
+      var text = document.getElementsByClassName("groups");
+      if (checkBox.checked == true){
+      	for (i = 0; i < text.length; i++) { 
+          text[i].style.display = "block";          
+        }
+      } else {
+         for (i = 0; i < text.length; i++) { 
+          text[i].style.display = "none";
+        }
+      }
+    }
+    
+    function sortList(){
+      value = document.getElementById("sort").value;
+      valueAsc = document.getElementById("asc").value;
+      
+      ul = document.getElementById("list");
+      var new_ul = ul.cloneNode(false);
+      
+      var lis = [];
+      for(var i = ul.childNodes.length; i--;){
+          if(ul.childNodes[i].childNodes[0].nodeName === 'LI'){
+            lis.push(ul.childNodes[i]);
+          }
+      }
+      if(value=="title"){
+        lis.sort(
+          function (a, b) {
+            if (valueAsc === "desc"){          
+              if (a > b){
+                return -1;
+              }
+            } else{
+              if (a < b){
+                return -1;
+              }
+            }
+          }
+        );
+      } else {
+        lis.sort(
+          function (a, b) {   
+            if (valueAsc === "desc"){                 
+              if (parseInt(a.childNodes[0].childNodes[0].textContent) > parseInt(b.childNodes[0].childNodes[0].textContent)){
+                return -1;
+              }
+            }else{
+              if (parseInt(a.childNodes[0].childNodes[0].textContent) < parseInt(b.childNodes[0].childNodes[0].textContent)){
+                return -1;
+              }
+            }
+          }
+        );
+      }  
+      for(var i = 0; i < lis.length; i++)
+        new_ul.appendChild(lis[i]);
+      ul.parentNode.replaceChild(new_ul, ul);
+    }
+    
+    function sortListAsc(){      
+      ul = document.getElementById("list");
+      var new_ul = ul.cloneNode(false);
+      
+      var lis = [];
+      for(var i = ul.childNodes.length; i--;){
+          if(ul.childNodes[i].childNodes[0].nodeName === 'LI'){
+            lis.push(ul.childNodes[i]);
+          }
+      }
+      lis.sort(function(a, b){
+         return parseInt(b.childNodes[0].data , 10) - 
+                parseInt(a.childNodes[0].data , 10);
+      });
+
+      for(var i = 0; i < lis.length; i++)
+        new_ul.appendChild(lis[i]);
+      ul.parentNode.replaceChild(new_ul, ul);
+    }
+      
   div(class="container")
     h1= title
     p Welcome to #{title}
     canvas(id='canvas')
+    
+    p Sort by: 	<select id="sort" class="sort" onchange="sortList()">
+      <option value="count" selected>Message Count</option>
+      <option value="date" disabled>Date</option>
+      <option value="title">A-Z</option>
+    </select>
+    <select id="asc" class="asc" onchange="sortListAsc()">
+      <option value="desc" selected>Descending</option>
+      <option value="asc">Ascending</option>
+    </select> &emsp;
+    <input type="checkbox" name="directMessages" id="DirectMessages" checked onclick="showDirects()"> Direct Messages &emsp;
+    <input type="checkbox" name="groups" id="GroupMessages" checked onclick="showGroups()"> Group Chats
+    
     div(class="row")
       div(class="col")
-        ul(class="list-group")
+        ul(id="list" class="list-group")
           each chat in files
             a(href="/chat/" + chat.fileName)
               if chat.participants === null
-                li(class="list-group-item list-group-item-action list-group-item-light")
+                li(class="list-group-item list-group-item-action list-group-item-light directs all")
                   span(class="badge badge-primary badge-pill mr-4") #{chat.messageCount}
                   span #{chat.title}
               else
-                li(class="list-group-item list-group-item-action list-group-item-info")
+                li(class="list-group-item list-group-item-action list-group-item-info groups all")
                   span(class="badge badge-pill badge-light mr-4") #{chat.messageCount}
                   span #{chat.title}
                   span(class="showParticipantsOnHover") #{chat.participants}
