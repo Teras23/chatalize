@@ -4,9 +4,6 @@ block meta
   meta(property="fileName", content=fileName)
 
 block content
-  script(type='text/javascript').
-    var x = !{JSON.stringify(messages)}
-    	       
   div(class="container-fluid d-flex h-100 flex-column")
     div(class='row infobar py-2 border-bottom')
       div(class='col d-flex align-items-center')
@@ -34,7 +31,7 @@ block content
           br
           span(id="results") Found 0 results:
           ol(id="searchList")
-          
+
 
       div(class='col-4 py-4')
         p <button onclick="search(x)">Search messages: </button><input type="text" id="searchBar">

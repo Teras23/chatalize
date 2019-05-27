@@ -12,97 +12,98 @@ xhr.onreadystatechange = () => {
 xhr.send();
 
 function showDirects() {
-	var checkBox = document.getElementById("DirectMessages");
+    var checkBox = document.getElementById("directMessages");
     var text = document.getElementsByClassName("directs");
-    if (checkBox.checked == true){
-    	for (i = 0; i < text.length; i++) { 
-      	  text[i].style.display = "block";
+    if (checkBox.checked == true) {
+        for (i = 0; i < text.length; i++) {
+            text[i].style.display = "block";
         }
     } else {
- 	   for (i = 0; i < text.length; i++) { 
- 	      text[i].style.display = "none";
-       }
+        for (i = 0; i < text.length; i++) {
+            text[i].style.display = "none";
+        }
     }
 }
 
 
 function showGroups() {
-	var checkBox = document.getElementById("GroupMessages");
+    var checkBox = document.getElementById("groupMessages");
     var text = document.getElementsByClassName("groups");
-    if (checkBox.checked == true){
-    	for (i = 0; i < text.length; i++) { 
-        	text[i].style.display = "block";          
+    if (checkBox.checked == true) {
+        for (var i = 0; i < text.length; i++) {
+            text[i].style.display = "block";
         }
     } else {
-    	for (i = 0; i < text.length; i++) { 
-      		text[i].style.display = "none";
+        for (var i = 0; i < text.length; i++) {
+            text[i].style.display = "none";
         }
     }
 }
-    
-function sortList(){
-	value = document.getElementById("sort").value;
-    valueAsc = document.getElementById("asc").value;
-      
+
+function sortList() {
+    value = document.getElementById("sort").value;
+    valueAsc = document.getElementById("descending").checked;
+
     ul = document.getElementById("list");
     var new_ul = ul.cloneNode(false);
-      
+
     var lis = [];
-    for(var i = ul.childNodes.length; i--;){
-    	if(ul.childNodes[i].childNodes[0].nodeName === 'LI'){
-        	lis.push(ul.childNodes[i]);
+    for (var i = ul.childNodes.length; i--;) {
+        if (ul.childNodes[i].childNodes[0].nodeName === 'LI') {
+            lis.push(ul.childNodes[i]);
         }
     }
-    if(value=="title"){
-    	lis.sort(function (a, b) {
-        	if (valueAsc === "desc"){          
-            	if (a > b){
-                	return -1;
-              	}
-            } else{
-            	if (a < b){
-                	return -1;
-              	}
+    if (value === "title") {
+        lis.sort(function (a, b) {
+            if (valueAsc === false) {
+                if (a > b) {
+                    return -1;
+                }
+            } else {
+                if (a < b) {
+                    return -1;
+                }
             }
         });
-	} else {
-    	lis.sort(function (a, b) {   
-            if (valueAsc === "desc"){                 
-            	if (parseInt(a.childNodes[0].childNodes[0].textContent) > parseInt(b.childNodes[0].childNodes[0].textContent)){
-                	return -1;
-              	}
-            }else{
-            	if (parseInt(a.childNodes[0].childNodes[0].textContent) < parseInt(b.childNodes[0].childNodes[0].textContent)){
-                	return -1;
-              	}
+    } else {
+        lis.sort(function (a, b) {
+            if (valueAsc === true) {
+                if (parseInt(a.childNodes[0].childNodes[0].textContent) > parseInt(b.childNodes[0].childNodes[0].textContent)) {
+                    return -1;
+                }
+            } else {
+                if (parseInt(a.childNodes[0].childNodes[0].textContent) < parseInt(b.childNodes[0].childNodes[0].textContent)) {
+                    return -1;
+                }
             }
-      	});
-	}
-	  
-	for(var i = 0; i < lis.length; i++)
-		new_ul.appendChild(lis[i]);
-	ul.parentNode.replaceChild(new_ul, ul);
+        });
+    }
+
+    for (var i = 0; i < lis.length; i++)
+        new_ul.appendChild(lis[i]);
+    ul.parentNode.replaceChild(new_ul, ul);
 }
-    
-function sortListAsc(){      
-	ul = document.getElementById("list");
+
+function sortListAsc() {
+    ul = document.getElementById("list");
     var new_ul = ul.cloneNode(false);
-      
+
     var lis = [];
-    for(var i = ul.childNodes.length; i--;){
-    	if(ul.childNodes[i].childNodes[0].nodeName === 'LI'){
-        	lis.push(ul.childNodes[i]);
+    for (var i = ul.childNodes.length; i--;) {
+        if (ul.childNodes[i].childNodes[0].nodeName === 'LI') {
+            lis.push(ul.childNodes[i]);
         }
-	}
-    lis.sort(function(a, b){
-    	return parseInt(b.childNodes[0].data , 10) - 
-                parseInt(a.childNodes[0].data , 10);
+    }
+    lis.sort(function (a, b) {
+        return parseInt(b.childNodes[0].data, 10) -
+            parseInt(a.childNodes[0].data, 10);
     });
 
-	for(var i = 0; i < lis.length; i++)
-    	new_ul.appendChild(lis[i]);
-	ul.parentNode.replaceChild(new_ul, ul);
+    for (var i = 0; i < lis.length; i++)
+        new_ul.appendChild(lis[i]);
+    ul.parentNode.replaceChild(new_ul, ul);
 }
+
 function drawChart(rawData) {
     var ctx = document.getElementById("canvas");
 
