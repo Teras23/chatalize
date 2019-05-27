@@ -34,7 +34,11 @@ block content
 
 
       div(class='col-4 py-4')
-        p <button onclick="search(x)">Search messages: </button><input type="text" id="searchBar">
+        div(class="form-inline mb-4")
+          div(class="form-group")
+            label(for="searchBar" class="mr-4") Search messages:
+            input(type="text" id="searchBar" class="form-control")
+          button(class="btn btn-primary mx-4" onclick="search()") Search
         p #[strong Total messages:] #{messageCount}
         canvas(id='canvas')
         p #[strong Total messages by person]

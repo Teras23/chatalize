@@ -79,7 +79,10 @@ router.get('/chat/:chatName/messages', (req, res) => {
         });
     }
 
-    res.send(messages);
+    res.send({
+        messages: messages,
+        ownerName: chatData.ownerName
+    });
 });
 
 router.get('/chat/:chatName/data', (req, res) => {
