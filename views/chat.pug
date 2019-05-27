@@ -20,10 +20,10 @@ block content
               div(class='row')
                 div(class='col')
                   if message.sender_name === ownerName
-                    span(class='message-right')
+                    span(class='message-right' data-toggle="tooltip" data-placement="top" title=message.timestamp)
                       span=message.content
                   else
-                    span(class='message-left')
+                    span(class='message-left' data-toggle="tooltip" data-placement="top" title=message.timestamp)
                       span=message.content
         div(class='container-search flex-grow-1' id="searchContainer")
           <button onclick=backToChat()>Back</button>

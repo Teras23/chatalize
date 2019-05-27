@@ -31,6 +31,11 @@ router.get('/chat/:chatName', (req, res) => {
     let longestTime = an.longestTimeBetweenConversations(chatData.messages[chatName]);
     let averageWords = an.averageMessageLength(chatData.messages[chatName]);
 
+    for (let i = 0; i < chatData.messages[chatName]['messages'].length; i++) {
+        let date = new Date(chatData.messages[chatName]['messages'][i].timestamp_ms);
+        chatData.messages[chatName]['messages'][i].timestamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDay() + 1) + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+
     res.render('chat', {
         fileName: chatName,
         chatName: chatData.messages[chatName]['title'],
@@ -79,8 +84,13 @@ router.get('/chat/:chatName/messages', (req, res) => {
         });
     }
 
+    for (let i = 0; i < messages.length; i++) {
+        let date = new Date(messages[i].timestamp_ms);
+        messages[i].timestamp = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDay() + 1) + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+
     res.send({
-        messages: messages,
+        messages: messages.reverse(),
         ownerName: chatData.ownerName
     });
 });

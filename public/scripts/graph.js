@@ -18,28 +18,28 @@ chat.scrollTop = chat.scrollHeight;
 document.getElementById('searchBar').onkeypress = search;
 
 function search() {
-    var xhr = new XMLHttpRequest();
+    var xhrMsg = new XMLHttpRequest();
     var searchValue = document.getElementById("searchBar").value;
 
     if(searchValue.length < 3) {
         return;
     }
 
-    xhr.open('GET', '/chat/' + fileName + '/messages?msg=' + searchValue);
-    xhr.onreadystatechange = () => {
+    xhrMsg.open('GET', '/chat/' + fileName + '/messages?msg=' + searchValue);
+    xhrMsg.onreadystatechange = () => {
         var DONE = 4;
         var OK = 200;
-        if (xhr.readyState === DONE && xhr.status === OK) {
-            let data = JSON.parse(xhr.responseText);
+        if (xhrMsg.readyState === DONE && xhrMsg.status === OK) {
+            let data = JSON.parse(xhrMsg.responseText);
             createMessageBubbles(data);
-            drawTimeBetween(data);
         }
     };
-    xhr.send();
+    xhrMsg.send();
 }
 
 function createMessageBubbles(data) {
     var searchBox = document.getElementById("chatContainer");
+    console.log(data);
     var content = "";
     for (var i = 0; i < data["messages"].length; i++) {
         var message = data["messages"][i]["content"];
@@ -52,7 +52,7 @@ function createMessageBubbles(data) {
             spanClass= "message-right";
         }
 
-        content += '<div class="row"><div class="col"><span class="' + spanClass + '"><span>' + message + '</span></span></div></div>'
+        content += '<div class="row"><div class="col"><span class="' + spanClass + '" data-toggle="tooltip" data-placement="top" title="' + data["messages"][i]["timestamp"] + '"><span>' + message + '</span></span></div></div>'
     }
     searchBox.innerHTML = content;
     var chat = document.getElementById("chatContainer");
