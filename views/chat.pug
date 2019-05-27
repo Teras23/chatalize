@@ -4,6 +4,9 @@ block meta
   meta(property="fileName", content=fileName)
 
 block content
+  script(type='text/javascript').
+    var x = !{JSON.stringify(messages)}
+    	       
   div(class="container-fluid d-flex h-100 flex-column")
     div(class='row infobar py-2 border-bottom')
       div(class='col d-flex align-items-center')
@@ -25,7 +28,16 @@ block content
                   else
                     span(class='message-left')
                       span=message.content
+        div(class='container-search flex-grow-1' id="searchContainer")
+          <button onclick=backToChat()>Back</button>
+          br
+          br
+          span(id="results") Found 0 results:
+          ol(id="searchList")
+          
+
       div(class='col-4 py-4')
+        p <button onclick="search(x)">Search messages: </button><input type="text" id="searchBar">
         p #[strong Total messages:] #{messageCount}
         canvas(id='canvas')
         p #[strong Total messages by person]

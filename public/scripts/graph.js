@@ -15,6 +15,63 @@ xhr.send();
 var chat = document.getElementById("chatContainer");
 chat.scrollTop = chat.scrollHeight;
 
+function search(messages) {
+	var chatBox = document.getElementById("chatContainer");
+	var searchBox = document.getElementById("searchContainer");	
+	var found = 0;
+	var lis = [];
+	var searchWord = document.getElementById("searchBar").value
+	for(var i=0; i<messages.length; i++){
+		if (messages[i].content !== undefined){			
+			if (messages[i].content.toLowerCase().includes(searchWord)){
+				lis.push(messages[i]);
+				found++;
+			} 			
+		}	
+	}
+	chatBox.style.display = "none";
+	searchBox.style.display = "block";
+	if (found==0) {
+		document.getElementById('results').innerHTML = 'No results found.';
+	} else{
+		document.getElementById('results').innerHTML = 'Found ' + found + ' results.';
+		var ol = document.getElementById("searchList");
+		for(var i=0; i<lis.length; i++){
+			var li = document.createElement("li");
+			ol.appendChild(li);
+    		li.innerHTML += convert(lis[i].timestamp_ms) + "<br />" + "<button class='button-link' onclick='newList()'>" + lis[i].content + "</button>";
+		}		
+	}
+}
+
+function newList(){ //this function was intended to show the searched chatpiece, unfinished
+	var chatBox = document.getElementById("chatContainer");	
+	var searchBox = document.getElementById("searchContainer");
+	chatBox.style.display = "block";
+	searchBox.style.display = "none";
+}
+
+function backToChat(){
+	var chatBox = document.getElementById("chatContainer");	
+	var searchBox = document.getElementById("searchContainer");
+	chatBox.style.display = "block";
+	searchBox.style.display = "none";
+}
+
+function convert(timestamp) {
+  var date = new Date(
+    parseInt(
+      timestamp
+    )
+  );
+  return [
+    ("0" + date.getDate()).slice(-2),
+    ("0" + (date.getMonth()+1)).slice(-2),
+    date.getFullYear()
+  ].join('/');
+}
+
+
 function drawTimeBetween(rawData) {
     var ctx = document.getElementById("canvas");
 
