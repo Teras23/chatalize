@@ -66,6 +66,20 @@ function newList(){ //this function was intended to show the searched chatpiece,
 	searchBox.style.display = "none";
 }
 
+function showSnippets(){
+    var chatBox = document.getElementById("chatContainer");
+	var searchBox = document.getElementById("searchContainer");
+	chatBox.style.display = "block";
+	searchBox.style.display = "none";
+}
+
+function showAll(){
+    var chatBox = document.getElementById("chatContainer");
+	var searchBox = document.getElementById("searchContainer");
+	chatBox.style.display = "none";
+	searchBox.style.display = "block";
+}
+
 function backToChat(){
 	var chatBox = document.getElementById("chatContainer");
 	var searchBox = document.getElementById("searchContainer");

@@ -23,14 +23,20 @@ block content
                     span(class='message-right' data-toggle="tooltip" data-placement="top" title=message.timestamp)
                       span=message.content
                   else
-                    span(class='message-left' data-toggle="tooltip" data-placement="top" title=message.timestamp)
+                    span(class='message-left' data-toggle="tooltip" data-placement="top" title=message.timestamp + " " + message.sender_name)
                       span=message.content
-        div(class='container-search flex-grow-1' id="searchContainer")
-          <button onclick=backToChat()>Back</button>
-          br
-          br
-          span(id="results") Found 0 results:
-          ol(id="searchList")
+                      
+        div(class='container-search flex-grow-1' id="searchContainer" )
+          each message in messages
+            if message.content !== undefined
+              div(class='row')
+                div(class='col')
+                  if message.sender_name === ownerName
+                    span(class='message-right' data-toggle="tooltip" data-placement="top" title=message.timestamp)
+                      span=message.content
+                  else
+                    span(class='message-left' data-toggle="tooltip" data-placement="top" title=message.timestamp + " " + message.sender_name)
+                      span=message.content
 
 
       div(class='col-4 py-4')
@@ -39,6 +45,8 @@ block content
             label(for="searchBar" class="mr-4") Search messages:
             input(type="text" id="searchBar" class="form-control")
           button(class="btn btn-primary mx-4" onclick="search()") Search
+        button(class="btn btn-primary mx-4 all-button" onclick="showAll()") Show all chat messages
+        button(class="btn btn-primary mx-4 all-button" onclick="showSnippets()") Show recent messages
         p #[strong Total messages:] #{messageCount}
         canvas(id='canvas')
         p #[strong Total messages by person]

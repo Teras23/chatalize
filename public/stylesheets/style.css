@@ -10,7 +10,13 @@ a {
   background: none;
   border: none;
 }
-
+.all-button {
+  width:120px;
+  height:50px;
+  text-align:center;
+  line-height:1.1em;
+  font-size:1.1em;
+}
 .container-search {
   display: none;
   overflow-y: scroll;
